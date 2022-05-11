@@ -9,18 +9,23 @@
       crossorigin="anonymous"
     ></script>
     <link rel="shortcut icon" href="#" />
-    <title>Musisc Player</title>
+    <title>Music Player</title>
   </head>
   <body>
     <div class="Music-box">
       <p class="title">Play Favorite Songs</p>
-      <img class="song-image" src="taylor-swift-all-too-well-car.webp" alt="" />
+      <img class="song-image" src="star.png" alt="" />
       <div class="music-info">
         <p class="song-name">Someone Like You</p>
         <p class="singer">Taylor Swift</p>
-        <audio class="audio">
-          <source id="source" src="lord.mp3" />
+        <audio class="audio" preload="metadata">
+          <source id="source" src="star.mp3" />
         </audio>
+      </div>
+      <div class="timeline">
+        <p class="start-time">00:00</p>
+        <div class="song-timeline"><div class="itimeline"></div></div>
+        <p class="end-time">00:00</p>
       </div>
       <div class="nav">
         <i class="fa-solid fa-shuffle btn"></i>
