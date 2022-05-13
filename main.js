@@ -8,6 +8,7 @@ let shuffleBtn= document.querySelector(".fa-shuffle");
 let songName= document.querySelector(".song-name");
 let singer= document.querySelector(".singer");
 let returnBtn= document.querySelector(".return");
+let timelineContainer = document.querySelector(".song-timeline");
 let itimeline = document.querySelector(".itimeline");
 let startTime= document.querySelector(".start-time");
 let endTime = document.querySelector (".end-time");
@@ -19,6 +20,7 @@ let songInfoSinger = ["Lady Gaga", "Taylor Swift", "Taylor swift", "Billi Eilish
 let i = 0;
 let duration;
 let songImages =["star.png","lover.jpg","man.jpg","bili.png"]
+let vol = document.querySelector("#vol");
 
 ///////////Functions//
 
@@ -27,6 +29,7 @@ function songInfo(){
     singer.textContent=songInfoSinger[i];
 }
 function playSong() {
+    songImage.setAttribute("src",songImages[i])
     audio.play();
     playBtn.classList.remove("fa-play");
     playBtn.classList.add("fa-pause");
@@ -42,6 +45,35 @@ function playSong() {
     }
     songImage.setAttribute("src",songImages[i])
 }
+
+function nextSong () {
+    if(i==songs.length-1){
+        audio.setAttribute("src", songs[i]);
+        playSong()
+        songInfo()
+    }else{
+        i+=1;
+        audio.setAttribute("src", songs[i]);
+    playSong()
+    songInfo()
+    updateProgress()
+}};
+
+function backSong(){
+    if(i==0){
+        audio.setAttribute("src", songs[i]);
+        updateProgress()
+        playSong()
+        songInfo() 
+
+    }else{
+        i-=1;
+        audio.setAttribute("src", songs[i]);
+        playSong();
+        songInfo()
+        updateProgress()}
+}
+
 function updateProgress(){
     let currentMinute = Math.floor(audio.currentTime/60)
     let currentSecond = Math.floor(audio.currentTime-currentMinute *60)
@@ -52,6 +84,16 @@ function updateProgress(){
     }else{
     startTime.innerText = "0"+currentMinute + ":"+currentSecond;}
  }
+ function setProgress(e) {
+    let width =this.clientWidth;
+    let clickX = e.offsetX;
+    let duration =audio.duration;
+    audio.currentTime= ((clickX*duration) /width)
+}
+
+function setVolume() {
+   audio.volume= vol.value/100;
+}
 
  ///////////Event listeners//
 
@@ -70,38 +112,9 @@ playBtn.addEventListener("click", function(){
     }
 })
 
-forwardBtn.addEventListener("click", function(){
-    if(i==songs.length-1){
-        audio.setAttribute("src", songs[i]);
-        playSong()
-        songInfo()
-    }else{
-        i+=1;
-        audio.setAttribute("src", songs[i]);
-    playSong()
-    songInfo()
-    updateProgress()
-}
- })
-
- backwardBtn.addEventListener("click", ()=>{
-    if(i==0){
-        audio.setAttribute("src", songs[i]);
-        updateProgress()
-        playSong()
-        songInfo() 
-
-    }else{
-        i-=1;
-        audio.setAttribute("src", songs[i]);
-        playSong();
-        songInfo()
-        updateProgress()
-
-}
-
- })
- shuffleBtn.addEventListener("click" , function(){
+forwardBtn.addEventListener("click", nextSong)
+backwardBtn.addEventListener("click", backSong)
+shuffleBtn.addEventListener("click" , function(){
      i=Math.floor(Math.random()*4);
      audio.setAttribute("src", songs[i])
      audio.play();
@@ -109,7 +122,6 @@ forwardBtn.addEventListener("click", function(){
      playBtn.classList.remove("fa-play")
      playBtn.classList.add("fa-pause")
      updateProgress()
-
  }) 
  returnBtn.addEventListener("click", ()=>{
      audio.setAttribute("src", songs[i])
@@ -117,4 +129,10 @@ forwardBtn.addEventListener("click", function(){
      updateProgress()
  })
 
+itimeline.addEventListener("click",function(){
+    console.log(itimeline.style.width)
+})
+timelineContainer.addEventListener("click", setProgress);
+vol.addEventListener("change", setVolume)
+audio.addEventListener("ended", nextSong)
 
